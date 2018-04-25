@@ -1,0 +1,66 @@
+@model WeddingPlanner.Models.WeddingViewModel;
+@using WeddingPlanner.Models; 
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Plan Your Wedding</h1>
+    <a href="/Dashboard" ><button class="btn btn-info">Dashboard</button></a>
+    <a href="/Logout" ><button class="btn btn-info">Logout</button></a>
+    <hr>
+<div>
+    <form asp-controller="Wedding" asp-action="addWedding" class="form-horizontal" method="POST" >
+        <!-- <span asp-validation-for="IsValid"></span> -->
+        <div class="form-group">
+            <span asp-validation-for="WedderOne"></span>
+            <label asp-for="WedderOne" class="col-sm-2 control-label">Wedder One</label>
+            <div class="col-sm-3">
+             <input asp-for="WedderOne" class="form-control" placeholder="WedderOne"/>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <span asp-validation-for="WedderTwo"></span>
+            <label asp-for="WedderTwo" class="col-sm-2 control-label">Wedder Two</label>
+            <div class="col-sm-3">
+                <input asp-for="WedderTwo" class="form-control" placeholder="WedderTwo"/>
+            </div>
+        </div>
+         <div class="form-group">
+            <div class="input-append date form_datetime" data-date="2018-04-23T15:25:00Z">
+                <label asp-for="Date" class="col-sm-2 control-label">Date</label>
+            <div class="col-sm-3">
+                <input asp-for="Date" id="date" type="date" name="Date">
+                <span class="add-on"><i class="icon-remove"></i></span>
+                <span class="add-on"><i class="icon-calendar"></i></span>
+                @TempData["futuredate"]
+                @ViewBag.ErrorMessage
+            <!-- <span>@TempData["message"]</span> -->
+            </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <span asp-validation-for="Address"></span>        
+            <label asp-for="Address" class="col-sm-2 control-label">Address</label>
+            <div class="col-sm-3">
+                <input asp-for="Address" class="form-control"  placeholder="Address" name="Address">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+            <input type="submit" value="Create" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+    
+</body>
+</html>

@@ -1,0 +1,241 @@
+    wedding controller 
+    //     [HttpGet]
+    //     [Route("Dashboard")]
+    //     public IActionResult Dashboard()
+    //     {
+    //         int? activeId = HttpContext.Session.GetInt32("activeUser");
+    //         if (activeId != null)
+    //         {
+    //             ViewBag.allWeddings = _context.weddings.Include(w => w.Guests).ThenInclude(g => g.User).ToList();
+    //             ViewBag.activeId = activeId;
+    //             User activeUser = _context.users.Single(u => u.userId == (int)activeId);
+    //             return View();
+    //         }
+    //         return RedirectToAction("Index", "Login");
+    //     }
+    //     [HttpGet]
+    //     [Route("newWedding")]
+    //     public IActionResult NewWedding()
+    //     {
+    //         int? activeId = HttpContext.Session.GetInt32("activeUser");
+    //         if (activeId != null)
+    //         {
+    //             return View();
+    //         }
+    //         return RedirectToAction("Index", "Login");
+    //     }
+    //     [HttpPost]
+    //     [Route("addWedding")]
+    //     public IActionResult AddWedding(WeddingViewModel model)
+    //     {
+    //         int? activeId = HttpContext.Session.GetInt32("activeUser");
+    //         if (activeId != null)
+    //         {
+    //             if (ModelState.IsValid)
+    //             {
+    //                 Wedding newWedding = new Wedding
+    //                 {
+    //                     WedderOne = model.WedderOne,
+    //                     WedderTwo = model.WedderTwo,
+    //                     Date = (DateTime)model.Date,
+    //                     Address = model.Address,
+    //                     userId = (int)activeId
+    //                 };
+    //                 _context.Add(newWedding);
+    //                 _context.SaveChanges();
+    //             }
+    //             return View("NewWedding");
+    //         }
+    //         return RedirectToAction("Index", "Login");
+    //     }
+    //     [HttpGet]
+    //     [Route("add/guest/{weddingId}")]
+    //     public IActionResult AddGuest(int WeddingId)
+    //     {
+    //         int? activeId = HttpContext.Session.GetInt32("activeUser");
+    //         if (activeId != null)
+    //         {
+    //             GuestList newGuest = new GuestList
+    //             {
+    //                 EventId = WeddingId,
+    //                 userId = (int)activeId
+    //             };
+    //             _context.Add(newGuest);
+    //             _context.SaveChanges();
+    //             return RedirectToAction("Dashboard");
+    //         }
+    //         return RedirectToAction("Index", "Login");
+    //     }
+    //     [HttpGet]
+    //     [Route("remove/guest/{weddingId}")]
+    //     public IActionResult RemoveGuest(int weddingId)
+    //     {
+    //         int? activeId = HttpContext.Session.GetInt32("activeUser");
+    //         if (activeId != null)
+    //         {
+    //             GuestList canceledGuest = _context.guestlist.SingleOrDefault(g => g.EventId == weddingId && g.userId == (int)activeId);
+    //             _context.guestlist.Remove(canceledGuest);
+    //             _context.SaveChanges();
+    //             return RedirectToAction("Dashboard");
+    //         }
+    //         return RedirectToAction("Index", "Login");
+    //     }
+    //     [HttpGet]
+    //     [Route("remove/wedding/{weddingId}")]
+    //     public IActionResult DeleteWedding(int weddingId) //Remove wedding and associated guest RSVP's
+    //     {
+    //         int? activeId = HttpContext.Session.GetInt32("activeUser");
+    //         if (activeId != null)
+    //         {
+    //             Wedding canceledWedding = _context.weddings.SingleOrDefault(w => w.WeddingId == weddingId);
+    //             var invitedGuests = _context.guestlist.Where(g => g.EventId == weddingId);
+    //             foreach (var each in invitedGuests)
+    //             {
+    //                 _context.guestlist.Remove(each);
+    //             }
+    //             _context.weddings.Remove(canceledWedding);
+    //             _context.SaveChanges();
+    //             return RedirectToAction("Dashboard");
+    //         }
+    //         return RedirectToAction("Index", "Login");
+    //     }
+    //     [HttpGet]
+    //     [Route("wedding/{weddingId}")]
+    //     public IActionResult ViewWedding(int weddingId)
+    //     {
+    //         List<Wedding> viewableWedding = _context.weddings.Where(w => w.WeddingId == weddingId).Include(w => w.Guests).ThenInclude(g => g.User).ToList();
+    //         if (viewableWedding.Count == 1)
+    //         {
+    //             ViewBag.wedding = viewableWedding[0];
+    //             return View();
+    //         }
+    //         return RedirectToAction("Dashboard");
+    //     }
+//     }
+
+
+
+DASHBOARD. CSHTML
+
+  @foreach(var wedding in ViewBag.AllWeddings)
+        {
+            <tr>
+                <td><a href="/ViewWedding">@wedding.WedderOne &amp; @wedding.WedderTwo</a></td>
+                <td>@wedding.Date.ToString("MMM d, yyyy")</td>
+                <td>@wedding.Guests.Count</td>
+                    @if(wedding.userId == ViewBag.userId)
+                    {
+                        <td><a asp-action="Delete" asp-controller="Wedding" asp-route-id="@wedding.WeddingId">Delete</a></td>
+                    }
+                    else
+                    {
+                        bool attending = false;
+                        @foreach(var guest in wedding.Guests)
+                        {
+                            @if(@guest.userId == ViewBag.userId)
+                            {
+                                attending = true;
+                                break;
+                            }
+                        }
+                    }
+                    @if(attending)
+                    {
+                        <td><a asp-action="unRSVP" asp-controller="Wedding" asp-route-id="@wedding.WeddingId">un-RSVP</a></td>
+                    }
+                    else
+                    {
+                        <td><a asp-action="RSVP" asp-controller="Wedding" asp-route-id="@wedding.WeddingId">RSVP</a></td>
+                    }
+                }
+        
+            </tr>
+        }
+
+
+ViewWedding .CSHTML
+
+
+@model WeddingPlanner.Models.WeddingViewModel;
+@using WeddingPlanner.Models;
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1 class='text-info'>@ViewBag.wedding.WedderOne & @ViewBag.wedding.WedderTwo 's wedding</h1>
+ 
+    <a href="/Dashboard" ><button class="btn btn-info">Dashboard</button></a>
+    <a href="/Logout" ><button class="btn btn-info">Logout</button></a>
+    <div>
+        <h3>Date: @ViewBag.wedding.Date.ToString("MMMM d, yyyy")</h3>
+        <h3>Guests:</h3>
+        <ul>
+            @foreach(var guest in ViewBag.wedding.Guests)
+            {
+                <li>@guest.User.FirstName @guest.User.LastName</li>
+            }
+        </ul>
+    </div>
+</body>
+</html>
+
+CONVERT TO DATETIME
+
+       public IActionResult DateTime()
+        {
+            System.Console.WriteLine("We are compare the DATETIME!");
+
+            // User ConfirmedUser = EmailExists(logUser.Email);
+            User exists = _context.users.Where(User => User.Email == logUser.Email).SingleOrDefault();
+            if (exists != null)
+            {
+                var Hasher = new PasswordHasher<User>();
+
+                if (0 != Hasher.VerifyHashedPassword(exists, exists.Password, logUser.Password))
+                {
+                    System.Console.WriteLine("**********SUCCESSFUL LOG O(N)*****************");
+                    HttpContext.Session.SetInt32("CurrentUser", exists.userId);
+                    HttpContext.Session.SetString("Username", exists.FirstName);
+                    _context.SaveChanges();
+                    return RedirectToAction("Dashboard", "Wedding");
+                }
+                else
+                {
+                    IsLoggedIn();
+                    ViewBag.LogInError = "Email and/or password incorrect";
+                    return View("Index");
+                }
+            }
+            else
+            {
+                IsLoggedIn();
+                return View("Index");
+
+
+                // HttpContext.Session.SetInt32("logUser", exists.userId);
+            }
+        }
+
+          public IActionResult AddReview( Review review)
+        {
+            if(ModelState.IsValid)
+            {
+                if( review.VisitDate > DateTime.Now )
+                {
+                    DateTime d1 = DateTime.Now;
+                    d1 = d1.AddDays(-1);
+                    TempData["futuredate"] = "Visit Date cannot be in the future!";
+                    return View("Index");
+                } 
+                _context.Add(review);
+                _context.SaveChanges();
+                return RedirectToAction("Reviews");
+            } 
+            return View("Index");
+        }

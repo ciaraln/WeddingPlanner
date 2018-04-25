@@ -1,0 +1,10 @@
+C:\Users\ciara\Documents\CodingDojo\c#\aspnetCore\WeddingPlanner\bin\Debug\netcoreapp2.0\WeddingPlanner.deps.json
+C:\Users\ciara\Documents\CodingDojo\c#\aspnetCore\WeddingPlanner\bin\Debug\netcoreapp2.0\WeddingPlanner.runtimeconfig.json
+C:\Users\ciara\Documents\CodingDojo\c#\aspnetCore\WeddingPlanner\bin\Debug\netcoreapp2.0\WeddingPlanner.runtimeconfig.dev.json
+C:\Users\ciara\Documents\CodingDojo\c#\aspnetCore\WeddingPlanner\bin\Debug\netcoreapp2.0\WeddingPlanner.dll
+C:\Users\ciara\Documents\CodingDojo\c#\aspnetCore\WeddingPlanner\bin\Debug\netcoreapp2.0\WeddingPlanner.pdb
+C:\Users\ciara\Documents\CodingDojo\c#\aspnetCore\WeddingPlanner\obj\Debug\netcoreapp2.0\WeddingPlanner.csproj.CoreCompileInputs.cache
+C:\Users\ciara\Documents\CodingDojo\c#\aspnetCore\WeddingPlanner\obj\Debug\netcoreapp2.0\WeddingPlanner.AssemblyInfoInputs.cache
+C:\Users\ciara\Documents\CodingDojo\c#\aspnetCore\WeddingPlanner\obj\Debug\netcoreapp2.0\WeddingPlanner.AssemblyInfo.cs
+C:\Users\ciara\Documents\CodingDojo\c#\aspnetCore\WeddingPlanner\obj\Debug\netcoreapp2.0\WeddingPlanner.dll
+C:\Users\ciara\Documents\CodingDojo\c#\aspnetCore\WeddingPlanner\obj\Debug\netcoreapp2.0\WeddingPlanner.pdb

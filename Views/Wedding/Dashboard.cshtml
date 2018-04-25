@@ -1,0 +1,62 @@
+@model WeddingPlanner.Models.WeddingViewModel;
+@using WeddingPlanner.Models; 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Welcome to the Wedding Planner, @ViewBag.UserInfo.FirstName !</h1>
+    <a href="/ANewWedding" ><button class="btn btn-primary">New Wedding</button></a>
+     <!-- <a href="/Logout" ><button class="btn btn-primary">Logout</button></a> -->
+     <hr>
+<table  class="table table-hover table-dark">
+     <thead>
+            <th class="col-sm-4">Wedding</th>
+            <th class="col-sm-5">Date</th>
+            <th class="col-sm-2">Guest</th>
+            <th class="col-sm-5">Action</th>
+        </thead>
+    <tbody>
+      @foreach(var wedding in ViewBag.AllWeddings)
+        {
+            <tr>
+                <td><a href="/ViewWedding/@wedding.WeddingId">@wedding.WedderOne &amp; @wedding.WedderTwo</a></td>
+                <td>@wedding.Date.ToString("MMM d, yyyy")</td>
+                <td>@wedding.Guests.Count</td>
+                <td>
+                @if(wedding.userId == ViewBag.userId)
+                    {
+                        <td><a asp-action="Delete" asp-controller="Wedding" asp-route-id="@wedding.WeddingId">Delete</a></td>
+                    }
+                    else
+                    {
+                        bool attending = false;
+                        @foreach(var guest in wedding.Guests)
+                        {
+                            @if(@guest.userId == ViewBag.userId)
+                            {
+                                attending = true;
+                                break;
+                            }
+            
+                    }
+                    @if(attending)
+                    {
+                        <a asp-action="unRSVP" asp-route-id="@wedding.WeddingId">un-RSVP</a>
+                    }
+                    else
+                    {
+                        <a asp-action="RSVP" asp-route-id="@wedding.WeddingId">RSVP</a>
+                    }
+                }
+                </td>
+            </tr>
+        }
+  </tbody>
+  </table>
+</body>

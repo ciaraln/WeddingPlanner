@@ -1,0 +1,56 @@
+@model WeddingPlanner.Models.LoginViewModel;
+@using WeddingPlanner.Models; 
+  
+   <h1>LogIn</h1>
+
+      @{
+          if(!(ViewBag.errors is null))
+          {
+            foreach (var error in ViewBag.errors)
+            {
+                if(@error.Errors.Count > 0 )
+                {
+                    <p>@error.Errors[0].ErrorMessage</p>
+                }
+            }
+          }
+          @ViewBag.err 
+      }
+
+    <form asp-controller="LogReg" class="form-horizontal" asp-action="Login" method="POST" >
+
+        <div class="form-group">
+            <span asp-validation-for="Email"></span>        
+            <label asp-for="Email" class="col-sm-2 control-label">Email Address</label>
+            <div class="col-sm-3">
+                <input asp-for="Email" class="form-control"  placeholder="Email" name="Email">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <span asp-validation-for="Password"></span>
+            <span asp-validation-for="PasswordConfirmation"></span>
+
+            <label asp-for="Password" class="col-sm-2 control-label">Password</label>
+            <div class="col-sm-3">
+                <input asp-for="Password" class="form-control"  placeholder="Password" name="Password">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+            <div class="checkbox">
+                <label>
+                <input type="checkbox"> Remember me
+                </label>
+            </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+            <input type="submit" value="Submit">
+            </div>
+        </div>
+    </form>
+</div>

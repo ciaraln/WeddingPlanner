@@ -1,0 +1,38 @@
+@model WeddingPlanner.Models.WeddingViewModel;
+@using WeddingPlanner.Models;
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+ <h1 class='text-info'> @ViewBag.WeddingInfo.WedderOne &AMP; @ViewBag.WeddingInfo.WedderTwo 's Wedding </h1>
+
+    <a href="/Dashboard" ><button class="btn btn-info">Dashboard</button></a>
+    <a href="/Logout" ><button class="btn btn-info">Logout</button></a>
+    <h3>Date: @ViewBag.WeddingInfo.Date </h3>
+
+
+    <h3>Guests:</h3>
+        <!-- // if currect user is on list do not include -->
+    @foreach( var guest in @ViewBag.WeddingInfo.Guests)
+    {
+        <ul>
+                <li> @guest.User.FirstName @guest.User.LastName</li>                    
+          </ul>  
+        
+    }
+    
+
+
+<br>
+<div ></div>
+<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d43040.117894844356!2d-122.19887410000001!3d47.60654640000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1524620354806" width="400" height="250" frameborder="0" style="border:5px" allowfullscreen></iframe>
+</body>
+</html>
