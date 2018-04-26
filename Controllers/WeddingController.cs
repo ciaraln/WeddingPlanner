@@ -72,7 +72,7 @@ namespace WeddingPlanner
                     }
                     return View("Dashboard");
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "LogReg");
             }
 
 
@@ -198,6 +198,7 @@ namespace WeddingPlanner
             Wedding RemoveWedding = _context.weddings.SingleOrDefault(wed => wed.WeddingId == id);
             _context.weddings.Remove(RemoveWedding);
             _context.SaveChanges();
+            Console.WriteLine("********* Wedding Deleted *********");
             return RedirectToAction("Dashboard");
         }
         
@@ -227,10 +228,12 @@ namespace WeddingPlanner
         [HttpGet, Route("unRSVP/{id}")]
         public IActionResult unRSVP(int id)
         {
-            GuestList GuestObj = _context.GuestList.Include(a=> a.User).ThenInclude(b => b.Guests).SingleOrDefault( c => c.WeddingId == id);
+            int? CurrentUserId = HttpContext.Session.GetInt32("CurrentUser");
+            GuestList RemoveUser = _context.GuestList.Where(a => a.WeddingId == id && a.userId == CurrentUserId).SingleOrDefault( c => c.WeddingId == id);
             
-            _context.GuestList.Remove(GuestObj);
+            _context.GuestList.Remove(RemoveUser);
             _context.SaveChanges();
+            Console.WriteLine("********* You Un-RSVPed *********");
             return RedirectToAction("Dashboard");
         }
 
